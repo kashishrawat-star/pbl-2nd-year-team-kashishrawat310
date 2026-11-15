@@ -28,27 +28,31 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 •🎨 ANSI Terminal UI: Interactive, color-coded CLI status monitoring (Green = Secured, Red = Compromised, Yellow = Quarantined).
 
 
-h1>🏗️ System Architecture</h1>The project follows an Object-Oriented Programming approach to represent network components and manage their interactions.
-
-Component| Description
-"NetworkNode"| Represents individual network devices and maintains their security status.
-"Firewall"| Represents network security and filtering mechanisms.
-"CoreServer"| Represents the central server of the network.
-"Malware"| Base class representing malware behavior.
-"Worm"| Derived class representing worm behavior.
-"NetworkDefenseEngine"| Coordinates network simulation components and operations.
 
 
-<h1>📊 Data Structures & Algorithms</h1>The project uses various data structures and algorithms to represent network topology and demonstrate network traversal.
+# 🏗️ System Architecture
 
-Data Structure / Algorithm| Application
-Graph| Represents the computer network topology.
-Adjacency List| Stores connections between network nodes.
-Queue| Supports Breadth-First Search traversal.
-Priority Queue| Supports shortest-path processing.
-Hash Map| Stores network node-related information.
-BFS| Simulates layer-by-layer network traversal.
-Dijkstra| Finds shortest paths in a weighted network.
+| Component | Description |
+|---|---|
+| NetworkNode | Represents individual network devices |
+| Firewall | Represents network security mechanisms |
+| CoreServer | Represents the central server |
+| Malware | Base class representing malware behavior |
+| Worm | Derived class representing worm behavior |
+| NetworkDefenseEngine | Coordinates network simulation |
+
+
+# 📊 Data Structures & Algorithms
+
+| Data Structure | Application |
+|---|---|
+| Graph | Represents network topology |
+| Adjacency List | Stores network connections |
+| Queue | Supports BFS traversal |
+| Priority Queue | Supports shortest-path processing |
+| Hash Map | Stores node-related information |
+| BFS | Demonstrates network traversal |
+| Dijkstra | Finds shortest paths |
 
 
 🛠️ Tech Stack
