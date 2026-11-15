@@ -494,4 +494,476 @@ public:
     bool loadTopologyFromCSV(const string& filename) {
         ifstream file(filename);
         if (!file.is_open()) {
-       
+            cout << Color::YELLOW << "  [!] Could not open '" << filename
+                 << "'. Loading default topology instead..."
+                 << Color::RESET << "\n";
+            return false;
+        }
+
+        networkGraph.clear();
+        networkNodes.clear();
+
+        string line;
+        while (getline(file, line)) {
+            // Skip comments and empty lines
+            if (line.empty() || line[0] == '#') continue;
+
+            stringstream ss(line);
+            string type;
+            getline(ss, type, ',');
+
+            if (type == "NODE") {
+                int id, clearance;
+                string name;
+                char comma;
+                ss >> id >> comma;
+                getline(ss, name, ',');
+                ss >> clearance;
+                addNode(id, name, clearance);
+            }
+            else if (type == "EDGE") {
+                int from, to, cost;
+                char comma;
+                ss >> from >> comma >> to >> comma >> cost;
+                addConnection(from, to, cost);
+            }
+        }
+
+        file.close();
+        cout << Color::GREEN << "  [+] Loaded " << networkNodes.size()
+             << " router(s) from '" << filename << "'."
+             << Color::RESET << "\n";
+        return true;
+    }
+
+    // === SHUBHAM SINGH'S CODE : AFTER-ACTION REPORT EXPORTER ===
+    // Role: Writes the results of all completed attack simulations to a 
+    // timestamped .txt file to fulfill the Phase 2 reporting requirement.
+    void exportAfterActionReport(const string& filename) const {
+        ofstream file(filename);
+        if (!file.is_open()) {
+            cout << Color::RED << "  [ERROR] Could not create report: "
+                 << filename << Color::RESET << "\n";
+            return;
+        }
+
+        // Timestamp
+        time_t now = time(nullptr);
+        char timeStr[64];
+        strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S",
+                 localtime(&now));
+
+        file << "================================================================\n";
+        file << "   AFTER-ACTION REPORT\n";
+        file << "   Cyber-Attack Simulation & Network Defense Engine v2.0\n";
+        file << "================================================================\n";
+        file << "Generated: " << timeStr << "\n\n";
+
+        // --- Network Summary ---
+        file << "--- NETWORK SUMMARY ---\n";
+        file << "Total Routers: " << networkNodes.size() << "\n\n";
+
+        for (const auto& p : networkNodes) {
+            const NetworkNode& node = p.second;
+            file << "  Router " << setw(2) << node.getId()
+                 << "  [" << setw(18) << left << node.getName() << "]"
+                 << "  Clearance: L" << node.getClearance()
+                 << "  Status: ";
+            if (node.isQuarantined())     file << "QUARANTINED";
+            else if (node.isCompromised()) file << "COMPROMISED";
+            else                           file << "SECURED";
+            file << "\n";
+        }
+
+        // --- Attack History ---
+        file << "\n--- ATTACK HISTORY (" << attackLog.size()
+             << " attack(s) recorded) ---\n\n";
+
+        for (size_t i = 0; i < attackLog.size(); i++) {
+            const AttackResult& atk = attackLog[i];
+            file << "Attack #" << (i + 1) << ": " << atk.malwareName
+                 << " [" << atk.malwareType << "]\n";
+            file << "  Origin: Router " << atk.originNode << "\n";
+            if (atk.targetNode != -1)
+                file << "  Target: Router " << atk.targetNode << "\n";
+
+            file << "  Compromised (" << atk.compromisedNodes.size() << "): ";
+            for (int id : atk.compromisedNodes) file << id << " ";
+            file << "\n";
+
+            file << "  Defended    (" << atk.blockedNodes.size() << "): ";
+            for (int id : atk.blockedNodes) file << id << " ";
+            file << "\n";
+
+            if (!atk.spreadPath.empty()) {
+                file << "  Spread Path: ";
+                for (const auto& sp : atk.spreadPath)
+                    file << sp.first << "->" << sp.second << "  ";
+                file << "\n";
+            }
+            file << "\n";
+        }
+
+        // --- Final Tally ---
+        int compromised = 0, secured = 0, quarantined = 0;
+        for (const auto& p : networkNodes) {
+            if (p.second.isQuarantined())       quarantined++;
+            else if (p.second.isCompromised())   compromised++;
+            else                                 secured++;
+        }
+
+        file << "--- FINAL NETWORK STATUS ---\n";
+        file << "  Compromised : " << compromised  << "\n";
+        file << "  Secured     : " << secured      << "\n";
+        file << "  Quarantined : " << quarantined   << "\n";
+        file << "================================================================\n";
+
+        file.close();
+        cout << Color::GREEN << "  [+] Report exported to: " << filename
+             << Color::RESET << "\n";
+    }
+
+    // =========================================================
+    //  DISPLAY FUNCTIONS
+    // =========================================================
+
+    void displayNetworkStatus() const {
+        cout << Color::CYAN << Color::BOLD
+             << "\n  +============================================+\n"
+             << "  |          NETWORK STATUS REPORT              |\n"
+             << "  +============================================+"
+             << Color::RESET << "\n\n";
+
+        for (const auto& p : networkNodes) {
+            const NetworkNode& node = p.second;
+            cout << "  " << node.getStatusString()
+                 << " Router " << setw(2) << node.getId()
+                 << "  |  " << setw(20) << left << node.getName()
+                 << "  |  Security: L" << node.getClearance() << "\n";
+        }
+        cout << "\n";
+    }
+
+    void displayTopology() const {
+        cout << Color::CYAN << Color::BOLD
+             << "\n  +============================================+\n"
+             << "  |          NETWORK TOPOLOGY MAP               |\n"
+             << "  +============================================+"
+             << Color::RESET << "\n\n";
+
+        for (const auto& p : networkGraph) {
+            int id = p.first;
+            string nodeName = networkNodes.count(id)
+                              ? networkNodes.at(id).getName() : "Unknown";
+
+            cout << Color::BLUE << "  Router " << id
+                 << " (" << nodeName << "):" << Color::RESET << "\n";
+
+            for (const auto& conn : p.second) {
+                string targetName = networkNodes.count(conn.targetRouterId)
+                    ? networkNodes.at(conn.targetRouterId).getName() : "Unknown";
+                string linkColor  = conn.isQuarantined ? Color::YELLOW : Color::DIM;
+                string linkTag    = conn.isQuarantined ? " [SEVERED]" : "";
+
+                cout << linkColor << "    +-- -> Router "
+                     << conn.targetRouterId
+                     << " (" << targetName << ")"
+                     << "  Cost: " << conn.baseCost << linkTag
+                     << Color::RESET << "\n";
+            }
+        }
+        cout << "\n";
+    }
+
+    // =========================================================
+    //  ATTACK EXECUTION (Polymorphic Dispatch)
+    // =========================================================
+
+    void launchAttack(unique_ptr<Malware> malware, int startNode) {
+        // Polymorphism: the correct execute() is called based on runtime type
+        AttackResult result = malware->execute(networkGraph, networkNodes, startNode);
+        attackLog.push_back(result);
+    }
+
+    // =========================================================
+    //  QUARANTINE DEFENSE SYSTEM
+    // =========================================================
+
+    // === KASHISH'S CODE : DYNAMIC QUARANTINE MANAGER ===
+    // Role: Allows the UI to defend the network by dynamically severing 
+    // all graph connections (edges) to and from a targeted node in real-time.
+    void quarantineNode(int nodeId) {
+        if (!nodeExists(nodeId)) {
+            cout << Color::RED << "  [ERROR] Router " << nodeId
+                 << " not found!" << Color::RESET << "\n";
+            return;
+        }
+
+        networkNodes[nodeId].setQuarantined(true);
+
+        // Sever outgoing connections from this node
+        for (auto& conn : networkGraph[nodeId])
+            conn.isQuarantined = true;
+
+        // Sever incoming connections to this node from all other routers
+        for (auto& p : networkGraph) {
+            for (auto& conn : p.second) {
+                if (conn.targetRouterId == nodeId)
+                    conn.isQuarantined = true;
+            }
+        }
+
+        cout << Color::YELLOW << Color::BOLD
+             << "  [QUARANTINE] Router " << nodeId << " ("
+             << networkNodes[nodeId].getName()
+             << ") ISOLATED. All connections severed."
+             << Color::RESET << "\n";
+    }
+
+    void restoreNode(int nodeId) {
+        if (!nodeExists(nodeId)) {
+            cout << Color::RED << "  [ERROR] Router " << nodeId
+                 << " not found!" << Color::RESET << "\n";
+            return;
+        }
+
+        networkNodes[nodeId].setQuarantined(false);
+
+        for (auto& conn : networkGraph[nodeId])
+            conn.isQuarantined = false;
+
+        for (auto& p : networkGraph) {
+            for (auto& conn : p.second) {
+                if (conn.targetRouterId == nodeId)
+                    conn.isQuarantined = false;
+            }
+        }
+
+        cout << Color::GREEN << "  [RESTORED] Router " << nodeId << " ("
+             << networkNodes[nodeId].getName()
+             << ") is back online. Connections restored."
+             << Color::RESET << "\n";
+    }
+
+    // =========================================================
+    //  SIMULATION RESET
+    // =========================================================
+
+    void resetSimulation() {
+        for (auto& p : networkNodes) {
+            p.second.setCompromised(false);
+            p.second.setQuarantined(false);
+        }
+        for (auto& p : networkGraph) {
+            for (auto& conn : p.second)
+                conn.isQuarantined = false;
+        }
+        attackLog.clear();
+        cout << Color::GREEN
+             << "  [+] Simulation reset. All nodes restored to SECURED state."
+             << Color::RESET << "\n";
+    }
+
+    // =========================================================
+    //  DEFAULT TOPOLOGY (fallback if CSV is missing)
+    // =========================================================
+
+    void loadDefaultTopology() {
+        addNode(1, "Gateway-Router",   1);
+        addNode(2, "Firewall-Alpha",   3);
+        addNode(3, "Web-Server",       2);
+        addNode(4, "Database-Server",  4);
+        addNode(5, "Core-Server",      5);
+
+        addConnection(1, 2, 10);
+        addConnection(1, 3, 15);
+        addConnection(2, 4, 12);
+        addConnection(3, 4, 50);
+        addConnection(4, 5, 20);
+
+        cout << Color::GREEN
+             << "  [+] Default 5-node network loaded."
+             << Color::RESET << "\n";
+    }
+
+    bool hasNodes() const { return !networkNodes.empty(); }
+};
+
+// ============================================================
+//  PHASE 3: INTERACTIVE ENGINE LOOP
+// ============================================================
+
+// === KASHISH'S CODE : COMMAND CENTER UI ===
+// Role: The main frontend loop handling switch statements, managing 
+// secure input sanitation, and linking user commands to the backend Engine.
+int main() {
+    // Enable ANSI escape code support on Windows 10+
+#ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut != INVALID_HANDLE_VALUE) {
+        DWORD dwMode = 0;
+        GetConsoleMode(hOut, &dwMode);
+        SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    }
+#endif
+
+    NetworkDefenseEngine engine;
+
+    // --- Startup Banner ---
+    cout << Color::CYAN << Color::BOLD;
+    cout << "\n  +====================================================+\n";
+    cout << "  |  CYBER-ATTACK SIMULATION & NETWORK DEFENSE v2.0    |\n";
+    cout << "  |              3rd Semester PBL Project              |\n";
+    cout << "  +====================================================+\n";
+    cout << Color::RESET << "\n";
+
+    // Try loading from CSV; fall back to hardcoded default
+    if (!engine.loadTopologyFromCSV("network_topology.csv")) {
+        engine.loadDefaultTopology();
+    }
+
+    int choice = 0;
+
+    // --- Main Simulation Loop ---
+    while (true) {
+        cout << Color::CYAN << Color::BOLD
+             << "\n  ============= COMMAND CENTER =============\n"
+             << Color::RESET;
+        cout << "  1. View Network Status\n";
+        cout << "  2. View Network Topology (Connections)\n";
+        cout << "  3. Launch Worm Attack      (BFS)\n";
+        cout << "  4. Launch Targeted Trojan   (Dijkstra)\n";
+        cout << "  5. Quarantine a Router\n";
+        cout << "  6. Restore a Quarantined Router\n";
+        cout << "  7. Export After-Action Report\n";
+        cout << "  8. Reset Simulation\n";
+        cout << "  0. Exit\n";
+        cout << Color::CYAN << "  > Enter choice: " << Color::RESET;
+
+        cin >> choice;
+
+        // Guard against non-numeric input
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << Color::RED
+                 << "  [!] Invalid input. Please enter a number (0-8)."
+                 << Color::RESET << "\n";
+            continue;
+        }
+
+        switch (choice) {
+
+        // --- 1. View Status ---
+        case 1:
+            engine.displayNetworkStatus();
+            break;
+
+        // --- 2. View Topology ---
+        case 2:
+            engine.displayTopology();
+            break;
+
+        // --- 3. Launch Worm (BFS) ---
+        case 3: {
+            string wormName;
+            int clearance, startNode;
+
+            cout << "  Enter worm name: ";
+            cin.ignore();
+            getline(cin, wormName);
+
+            cout << "  Enter worm clearance level (1-5): ";
+            cin >> clearance;
+
+            cout << "  Enter starting router ID: ";
+            cin >> startNode;
+
+            if (!engine.nodeExists(startNode)) {
+                cout << Color::RED << "  [ERROR] Router " << startNode
+                     << " does not exist!" << Color::RESET << "\n";
+                break;
+            }
+
+            // Polymorphic attack launch: Worm (derived from Malware)
+            auto worm = make_unique<Worm>(wormName, clearance);
+            engine.launchAttack(move(worm), startNode);
+            break;
+        }
+
+        // --- 4. Launch Targeted Trojan (Dijkstra) ---
+        case 4: {
+            string trojanName;
+            int clearance, startNode, targetNode;
+
+            cout << "  Enter trojan name: ";
+            cin.ignore();
+            getline(cin, trojanName);
+
+            cout << "  Enter trojan clearance level (1-5): ";
+            cin >> clearance;
+
+            cout << "  Enter entry router ID: ";
+            cin >> startNode;
+
+            cout << "  Enter target router ID: ";
+            cin >> targetNode;
+
+            if (!engine.nodeExists(startNode) ||
+                !engine.nodeExists(targetNode)) {
+                cout << Color::RED
+                     << "  [ERROR] One or both router IDs are invalid!"
+                     << Color::RESET << "\n";
+                break;
+            }
+
+            // Polymorphic attack launch: TargetedTrojan (derived from Malware)
+            auto trojan = make_unique<TargetedTrojan>(
+                trojanName, clearance, targetNode);
+            engine.launchAttack(move(trojan), startNode);
+            break;
+        }
+
+        // --- 5. Quarantine ---
+        case 5: {
+            int nodeId;
+            cout << "  Enter router ID to quarantine: ";
+            cin >> nodeId;
+            engine.quarantineNode(nodeId);
+            break;
+        }
+
+        // --- 6. Restore ---
+        case 6: {
+            int nodeId;
+            cout << "  Enter router ID to restore: ";
+            cin >> nodeId;
+            engine.restoreNode(nodeId);
+            break;
+        }
+
+        // --- 7. Export Report ---
+        case 7:
+            engine.exportAfterActionReport("after_action_report.txt");
+            break;
+
+        // --- 8. Reset ---
+        case 8:
+            engine.resetSimulation();
+            break;
+
+        // --- 0. Exit ---
+        case 0:
+            cout << Color::CYAN << Color::BOLD
+                 << "\n  [ENGINE] Simulation terminated. Stay secure.\n"
+                 << Color::RESET << "\n";
+            return 0;
+
+        default:
+            cout << Color::RED << "  [!] Invalid choice. Try again."
+                 << Color::RESET << "\n";
+        }
+    }
+
+    return 0;
+}
