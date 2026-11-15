@@ -6,11 +6,17 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 
 ##✨ Features
 •🐛 Autonomous Worm Contagion (BFS): Simulates self-replicating worms spreading outward to all directly connected neighboring routers layer by layer using a FIFO queue.
+
 •🎯 Targeted Trojan Infiltration (Dijkstra): Identifies and exploits the fastest, lowest-latency path through the subnet using a Min-Heap priority queue to strike high-value assets.
+
 •🔒 Role-Based Clearance Controls: Each node implements security clearance levels ($L1 \rightarrow L5$); attacks stall when node defenses outmatch malware sophistication.
+
 •⚡ Dynamic Quarantine Protocol: Real-time active defense triggers isolate compromised assets by severing incident edges ($Weight \rightarrow \infty$) without halting the entire grid.
+
 •📂 Dynamic CSV Topology Parser: Ingests external network maps (network_topology.csv) on startup for flexible architectural evaluations without code recompilation.
+
 •📝 Automated After-Action Forensics (AAR): Automatically exports timeline analytics, compromised nodes, and defense logs to an external after_action_report.txt.
+
 •🎨 ANSI Terminal UI: Interactive, color-coded CLI status monitoring (Green = Secured, Red = Compromised, Yellow = Quarantined).
 
 
