@@ -29,10 +29,14 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 🛠️ Tech Stack
 Domain	Technologies / Concepts
 Language	C++17
-Data Structures	Graph (Adjacency List), Queue (std::queue), Priority Queue (std::priority_queue), Hash Maps (std::unordered_map)
-OOP Architecture	Abstract Base Classes, Virtual Functions, Polymorphic Dispatch, Encapsulation, RAII
-Memory & I/O	Smart Pointers (std::unique_ptr), File Streams (std::ifstream, std::ofstream)
-Styling	ANSI Escape Sequences
+| Domain | Technologies / Concepts |
+|---|---|
+| Language | C++17 |
+| Data Structures | Graph, Queue, Priority Queue |
+| Algorithms | BFS, Dijkstra |
+| OOP | Encapsulation, Inheritance, Polymorphism |
+| Memory Management | Smart Pointers |
+| File Handling | File Streams |
 
 
 🚀 Quick Start / Installation
