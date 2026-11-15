@@ -28,7 +28,7 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 •🎨 ANSI Terminal UI: Interactive, color-coded CLI status monitoring (Green = Secured, Red = Compromised, Yellow = Quarantined).
 
 
-<h1>🏗️ System Architecture</h1>The project follows an Object-Oriented Programming approach to represent network components and manage their interactions.
+h1>🏗️ System Architecture</h1>The project follows an Object-Oriented Programming approach to represent network components and manage their interactions.
 
 Component| Description
 "NetworkNode"| Represents individual network devices and maintains their security status.
