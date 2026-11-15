@@ -1,3 +1,8 @@
+🛡️ Cyber-Attack Simulation & Network Defense Engine
+Algorithmic Malware Propagation & Dynamic Active Defense Simulator in C++
+� � � �
+
+
 ##📌 Executive Summary
 Modern enterprise infrastructure faces attacks ranging from autonomous, indiscriminate lateral movement to surgical, high-priority penetrations. The Cyber-Attack Simulation & Network Defense Engine models network routing infrastructure as a weighted directed graph to simulate and analyze these threat behaviors.
 
