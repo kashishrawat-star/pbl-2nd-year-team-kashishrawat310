@@ -1,0 +1,23 @@
+# ============================================================
+# Network Topology Configuration File
+# Cyber-Attack Simulation & Network Defense Engine v2.0
+# ============================================================
+# Format:
+#   NODE,<ID>,<Name>,<ClearanceLevel>
+#   EDGE,<FromID>,<ToID>,<LatencyCost>
+# ClearanceLevel: 1 (Low Security) ... 5 (Maximum Security)
+# ============================================================
+
+# --- Router Definitions ---
+NODE,1,Gateway-Router,1
+NODE,2,Firewall-Alpha,3
+NODE,3,Web-Server,2
+NODE,4,Database-Server,4
+NODE,5,Core-Server,5
+
+# --- Network Connections (bidirectional) ---
+EDGE,1,2,10
+EDGE,1,3,15
+EDGE,2,4,12
+EDGE,3,4,50
+EDGE,4,5,20
