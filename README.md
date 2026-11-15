@@ -5,6 +5,7 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 
 
 ##✨ Features
+
 •🐛 Autonomous Worm Contagion (BFS): Simulates self-replicating worms spreading outward to all directly connected neighboring routers layer by layer using a FIFO queue.
 
 •🎯 Targeted Trojan Infiltration (Dijkstra): Identifies and exploits the fastest, lowest-latency path through the subnet using a Min-Heap priority queue to strike high-value assets.
