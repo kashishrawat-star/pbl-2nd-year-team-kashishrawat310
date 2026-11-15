@@ -5,13 +5,13 @@
 </p>---
 
 
-##📌 Executive Summary
+📌 Executive Summary
 Modern enterprise infrastructure faces attacks ranging from autonomous, indiscriminate lateral movement to surgical, high-priority penetrations. The Cyber-Attack Simulation & Network Defense Engine models network routing infrastructure as a weighted directed graph to simulate and analyze these threat behaviors.
 
 By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alongside C++ Object-Oriented Design, the engine demonstrates both malware propagation mechanics and active defense mitigation via edge-severing isolation protocols.
 
 
-##✨ Features
+✨ Key Features
 
 •🐛 Autonomous Worm Contagion (BFS): Simulates self-replicating worms spreading outward to all directly connected neighboring routers layer by layer using a FIFO queue.
 
@@ -28,7 +28,30 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 •🎨 ANSI Terminal UI: Interactive, color-coded CLI status monitoring (Green = Secured, Red = Compromised, Yellow = Quarantined).
 
 
-##🛠️ Tech Stack
+<h1>🏗️ System Architecture</h1>The project follows an Object-Oriented Programming approach to represent network components and manage their interactions.
+
+Component| Description
+"NetworkNode"| Represents individual network devices and maintains their security status.
+"Firewall"| Represents network security and filtering mechanisms.
+"CoreServer"| Represents the central server of the network.
+"Malware"| Base class representing malware behavior.
+"Worm"| Derived class representing worm behavior.
+"NetworkDefenseEngine"| Coordinates network simulation components and operations.
+
+
+<h1>📊 Data Structures & Algorithms</h1>The project uses various data structures and algorithms to represent network topology and demonstrate network traversal.
+
+Data Structure / Algorithm| Application
+Graph| Represents the computer network topology.
+Adjacency List| Stores connections between network nodes.
+Queue| Supports Breadth-First Search traversal.
+Priority Queue| Supports shortest-path processing.
+Hash Map| Stores network node-related information.
+BFS| Simulates layer-by-layer network traversal.
+Dijkstra| Finds shortest paths in a weighted network.
+
+
+🛠️ Tech Stack
 Domain	Technologies / Concepts
 Language	C++17
 | Domain | Technologies / Concepts |
@@ -41,7 +64,7 @@ Language	C++17
 | File Handling | File Streams |
 
 
-##🚀 Quick Start / Installation
+🚀 Quick Start / Installation
 Prerequisites
 Modern C++17 compiler (g++, clang++, or MSVC)
 CMake 3.15+ (optional) or native CLI tools
