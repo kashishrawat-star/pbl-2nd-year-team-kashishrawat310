@@ -79,14 +79,16 @@ Language	C++17
 Build & Run
 
 # 1. Clone the repository
-git clone YOUR_REPOSITORY_LINK
+git clone https://github.com/kashishrawat-star/pbl-2nd-year-team-kashishrawat310.git
+
+# 2. Open the project folder
 cd pbl-2nd-year-team-kashishrawat310
 
-# 2. Compile with C++17 standards
+# 3. Compile the project
 g++ -std=c++17 -O3 -o sim.exe main.cpp
 
-# 3. Launch the Simulation Engine
-./sim.exe
+# 4. Run the project
+.\sim.exe
 
 
 <h1>📸 Terminal Output & Workflow</h1>
