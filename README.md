@@ -70,24 +70,26 @@ Language	C++17
 | File Handling | File Streams |
 
 
-<h1>🚀 Quick Start / Installation</h>
+<h1>🚀 Quick Start / Installation</h1>Prerequisites
 
-Prerequisites
-Modern C++17 compiler (g++, clang++, or MSVC)
-CMake 3.15+ (optional) or native CLI tools
+- Modern C++17 compiler (g++, clang++, or MSVC)
+- Visual Studio Code or Code::Blocks
+- Git (for cloning the repository)
+
 Build & Run
+
 # 1. Clone the repository
-git clone https://github.com/Zishan3909/cyber-attack-simulation.git
-cd cyber-attack-simulation
+git clone YOUR_REPOSITORY_LINK
+cd pbl-2nd-year-team-kashishrawat310
 
 # 2. Compile with C++17 standards
 g++ -std=c++17 -O3 -o sim.exe main.cpp
 
-# 3. Launch the Command Center
+# 3. Launch the Simulation Engine
 ./sim.exe
 
 
-#📸 Terminal Output & Workflow
+<h1>📸 Terminal Output & Workflow</h1>
   ============= COMMAND CENTER =============
   1. View Network Status
   2. View Network Topology (Connections)
