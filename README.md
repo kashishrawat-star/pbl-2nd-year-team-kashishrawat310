@@ -5,13 +5,13 @@
 </p>---
 
 
-📌 Executive Summary
+#📌 Executive Summary
 Modern enterprise infrastructure faces attacks ranging from autonomous, indiscriminate lateral movement to surgical, high-priority penetrations. The Cyber-Attack Simulation & Network Defense Engine models network routing infrastructure as a weighted directed graph to simulate and analyze these threat behaviors.
 
 By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alongside C++ Object-Oriented Design, the engine demonstrates both malware propagation mechanics and active defense mitigation via edge-severing isolation protocols.
 
 
-✨ Key Features
+#✨ Key Features
 
 •🐛 Autonomous Worm Contagion (BFS): Simulates self-replicating worms spreading outward to all directly connected neighboring routers layer by layer using a FIFO queue.
 
@@ -55,7 +55,7 @@ By applying fundamental data structures (Queues, Min-Heaps, Adjacency Lists) alo
 | Dijkstra | Finds shortest paths |
 
 
-🛠️ Tech Stack
+#🛠️ Tech Stack
 Domain	Technologies / Concepts
 Language	C++17
 | Domain | Technologies / Concepts |
@@ -68,7 +68,7 @@ Language	C++17
 | File Handling | File Streams |
 
 
-🚀 Quick Start / Installation
+#🚀 Quick Start / Installation
 Prerequisites
 Modern C++17 compiler (g++, clang++, or MSVC)
 CMake 3.15+ (optional) or native CLI tools
@@ -84,7 +84,7 @@ g++ -std=c++17 -O3 -o sim.exe main.cpp
 ./sim.exe
 
 
-##📸 Terminal Output & Workflow
+#📸 Terminal Output & Workflow
   ============= COMMAND CENTER =============
   1. View Network Status
   2. View Network Topology (Connections)
