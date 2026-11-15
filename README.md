@@ -1,6 +1,10 @@
-🛡️ Cyber-Attack Simulation & Network Defense Engine
-Algorithmic Malware Propagation & Dynamic Active Defense Simulator in C++
-� � � �
+<h1 align="center">🛡️ Cyber-Attack Simulation & Network Defense Engine</h1><h3 align="center">Algorithmic Malware Propagation & Dynamic Active Defense Simulator in C++</h3><p align="center">
+  <img src="https://img.shields.io/badge/Language-C++17-blue">
+  <img src="https://img.shields.io/badge/Algorithms-BFS-orange">
+  <img src="https://img.shields.io/badge/Design-OOP-green">
+</p>---
+
+📌 Executive Summary
 
 
 ##📌 Executive Summary
