@@ -4,7 +4,6 @@
   <img src="https://img.shields.io/badge/Design-OOP-green">
 </p>---
 
-
 <h1>📌 Executive Summary</h1>
 Modern enterprise infrastructure faces attacks ranging from autonomous, indiscriminate lateral movement to surgical, high-priority penetrations. The Cyber-Attack Simulation & Network Defense Engine models network routing infrastructure as a weighted directed graph to simulate and analyze these threat behaviors.
 
